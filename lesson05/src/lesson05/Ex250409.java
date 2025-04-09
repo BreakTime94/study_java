@@ -38,10 +38,10 @@ public class Ex250409 {
 		System.out.println("당신의 입장 결과는 ->" + canEnter);
 		
 		//교재 5번 윤년 계산문제, 4로 나누어 떨어지면서 100으로는 안 나누어 떨어지면서 400으로는 나누어 떨어지는문제
-		
+		// 100으로 나눠 떨어지고 400으로 안 나누어 떨어지는게 맞는거 아닌가
 		int year = 2020;
 		
-		boolean leapYear = (year / 4 == 0 && year / 100 != 0) && year / 400 == 0 ;
+		boolean leapYear = (year / 4 == 0 && year / 100 == 0) && year / 400 != 0 ;
 		
 		//윤년이면 true, 윤년이 아니면 false
 		
