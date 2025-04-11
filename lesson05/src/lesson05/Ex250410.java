@@ -68,7 +68,7 @@ public class Ex250410 {
 		 
 //			System.out.println(count == 2 ? "소수": "소수가 아닙니다.");
 	
-			int num = 17;
+			int num = 12;
 			int count = 0;
 			for (int i = 2; i <= num; i++) {
 			
