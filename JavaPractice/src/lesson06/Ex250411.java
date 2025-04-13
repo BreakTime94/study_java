@@ -160,16 +160,23 @@ public class Ex250411 {
 			System.out.println("=================");
 	// 교재 6번 이중 for문을 활용하여 완벽 피라미드 구현
 //			System.out.println((int)'*'); // * 값은 42
-			int starCount = 1;
-			String star3 = "*";
+//			System.out.println((int)' '); // 공백 값은 32
+			
+			
 			for(int i = 1; i <= 5; i++) {//행
-				for(int j = 1; j <= (2 * i - 1); j++) {//별 스페이스 공간을 확보하는 코드는 어디에다가 껴야할까?					
+				for(int k = 1; k <= 5 - i; k++) { // 스페이스 찍기
 					System.out.print(" ");
-					System.out.print(star3);
+				}
+					for(int j = 1; j <= (2 * i - 1); j++) {//별 찍기					
+						System.out.print("*");
+						
+					}
+					
+					System.out.println();
 				}
 				System.out.println();
-				starCount++;
-			}
+				
+			
 	// 교재 7번 
 		
 		int dice;
