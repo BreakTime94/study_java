@@ -48,12 +48,16 @@ public class Ex250414 {
 			if(tmp[i] != 0) {
 				countarr[i] = tmp[i]; 
 			} else {
+				int k = i;
 				while(countarr[i] == 0) {
 					int j = i;
-					countarr[i] = tmp[j+1];
+					
+					countarr[j] = tmp[j+1];
 					tmp[j+1] = tmp[j];
+					i++;
+					
 				}
-				
+				i = k;
 			}
 			
 		}
@@ -99,7 +103,7 @@ public class Ex250414 {
 		System.out.println();
 		for(int i = 0; i < chs.length; i++) {
 			for(int j = 0; j < chs[i].length; j++) {
-				result[j][4-i] = chs[i][j];
+				result[j][chs.length - 1 - i] = chs[i][j];
 			}
 		}
 		System.out.println(Arrays.deepToString(result));
