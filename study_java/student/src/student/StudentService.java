@@ -38,44 +38,28 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 	void modify() {
 		System.out.println("수정 기능"); // 개별 수정
 		int no = StudentUtils.nextInt("학번 > ");
-		if(students[no-1].name != null) {
-		students[no-1].name  = StudentUtils.nextLine("이름수정 > ");
-		students[no-1].kor = StudentUtils.nextInt("국어점수 수정> ");
-		students[no-1].eng = StudentUtils.nextInt("영어점수 수정> ");
-		students[no-1].mat = StudentUtils.nextInt("수학점수 수정> ");
-		System.out.println("수정이 기능이 종료됩니다."); 
-		}
-		else {
-			System.out.println("이름을 등록하시길 바랍니다.");
-			read();
+		
+		for(int i = 0; i < count; i++) {
+			if(no == students[i].no) {
+			String name  = StudentUtils.nextLine("이름 > ");
+			int kor = StudentUtils.nextInt("국어점수 > ");
+			int mat = StudentUtils.nextInt("영어점수 > ");
+			int eng = StudentUtils.nextInt("수학점수 > ");
+			students[i] = new Student(no, name, kor, eng, mat);
+			}
 		}
 	}
 	//삭제
-	void remove() {
+	void remove() {// 필드(인스턴스 변수 내 저장된 값을 주소값을 지우는 방법을 모색해보자 by 상현
 		System.out.println("삭제 기능");
 		int no = StudentUtils.nextInt("학번 > ");
-		for(;;) {
-			switch (StudentUtils.nextInt("1. 이름, 2. 국어 3. 영어 4. 수학 5. 뒤로가기")) {
-			case 1:
-				students[no-1].name  = null;
-				break;
-			case 2:
-				students[no-1].kor = 0;
-				break;
-			case 3:
-				students[no-1].eng = 0;
-				break;
-			case 4:
-				students[no-1].mat = 0;
-				break;
-			case 5:
-				System.out.println("삭제 기능이 종료됩니다.");
-				return;
-			default:
-				System.out.println("잘못된 입력입니다.");
-				break;
+		for(int i = 0; i < count; i++) {
+			if(no == students[i].no) {
+				students[i] = null;
+				for(int j = i; j < students.length; j++) {
+					students[j] = students[j + 1];
+				}
 			}
 		}
-		
 	}
 }
