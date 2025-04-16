@@ -14,20 +14,27 @@ public class Student { //수욱제에에
 	int kor;
 	int eng;
 	int mat;
-	
+	//int total = (kor + eng + mat) / 3; 도 방법이지만 좋지 않다.
 	Student(){
 		
 	}
-	Student(int n, String na){
-		no = n;
-		name = na;
+	Student(int no, String name){
+		this.no = no;
+		this.name = name;
 	}
-	Student(int a, String b, int ko, int en, int ma){
-		no = a;
-		name = b;
-		kor = ko;
-		eng = en;
-		mat = ma;
+	Student(int no, String name, int kor, int eng, int mat){
+		this(no, name);
+		this.kor = kor;
+		this.eng = eng;
+		this.mat = mat;
+	}
+	int total() {
+		
+		return kor+eng+mat;
+	}
+	int avg() {
+		
+		return (kor+eng+mat)/3 ;
 	}
 	
 }
