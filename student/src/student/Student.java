@@ -32,9 +32,9 @@ public class Student { //수욱제에에
 		
 		return kor+eng+mat;
 	}
-	double avg() {
+	int avg() {
 		
-		return (kor+eng+mat)/3d ;
+		return (kor+eng+mat)/3 ;
 	}
 	
 }
