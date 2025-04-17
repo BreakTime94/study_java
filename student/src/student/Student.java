@@ -32,9 +32,14 @@ public class Student { //수욱제에에
 		
 		return kor+eng+mat;
 	}
-	int avg() {
+	double avg() {
 		
-		return (kor+eng+mat)/3 ;
+		return total()/ 3d ;
 	}
+	
+	public String toString() {
+		return "학번 : " + no + " /이름 : " + name + " /국어 : " + kor + " /영어 : " + eng  + " /수학 : " + mat + " /평균 : " + avg() + " /총점 : " + total();  
+	}
+		
 	
 }
