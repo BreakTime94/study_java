@@ -5,6 +5,8 @@ import java.util.Arrays;
 public class StudentService {// 핵심 로직 클래스 CRUD(create read update delete)
 	// student 프로그램 과제
 	//1. 모든 필드, 메서드, 생성자 > 접근제한자
+	// 1-1. 필드 private, 메서드 public, 생성자 public 
+	// 1-2. getter, setter
 	//2. 어떤 값을 입력하더라도 예외 처리 (프로그램 종료는 정상종료)
 	//3. 점수값 입력의 범위 0 ~ 100사이만 인정 예외로도 가능!
 	//4. 이름 입력은 한글만 인정, 2글자 ~ 4글자 예외로도 가능!
@@ -36,7 +38,7 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 	//입력: 학번으로
 	//출력: 학생 타입(이름, 점수 등등)
 	
-	public Student findBy(int no) {
+	Student findBy(int no) {
 		Student student = null;
 		for (int i = 0; i < count; i++) {
 			if(students[i].no == no) {
@@ -46,7 +48,7 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 		return student;
 	}
 	//등록
-	public void register() {
+	 void register() {
 		System.out.println("등록 기능");
 		int no = StudentUtils.nextInt("학번(1부터 자연수로) > ");
 		
@@ -78,25 +80,25 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 		rank();
 	}
 	//조회
-	public void read() {
+	 void read() {
 		System.out.println("조회 기능"); // 등록 학생 전체 조회
 		for(int i = 0; i < count; i++) {
 //			System.out.println(students[i].no + ", " + students[i].name + ", " + students[i].total() + ", " + students[i].avg());
 			print(students);
 		}
 	}
-	public void readOrder() {
+	 void readOrder() {
 		System.out.println("석차순 조회 기능");
 		print(sortedStudents);
 	}
 	
-	public void print(Student[] stu) {
+	 void print(Student[] stu) {
 		for (int i = 0; i < count; i++) {
 			System.out.println(stu[i]);
 		}
 	}
 	//수정
-	public void modify() {
+	 void modify() {
 		System.out.println("수정 기능"); // 개별 수정
 		//학생들 배열에서 입력받은 학번과 일치하는 학생 
 		int no = StudentUtils.nextInt("학번 > ");
@@ -117,7 +119,7 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 		
 	}
 	//삭제
-	public void remove() {// 필드(인스턴스 변수 내 저장된 값을 주소값을 지우는 방법을 모색해보자 by 상현
+	 void remove() {// 필드(인스턴스 변수 내 저장된 값을 주소값을 지우는 방법을 모색해보자 by 상현
 		System.out.println("삭제 기능");
 		int no = StudentUtils.nextInt("학번 > ");
 		for (int i = 0; i < count; i++) {
@@ -130,7 +132,7 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 		sortedStudents = Arrays.copyOf(students,students.length);
 		rank();
 	}
-	public void allAvg() {
+	 void allAvg() {
 		System.out.println("과목별 평균조회");
 		double korSum = 0, engSum = 0, matSum = 0, avgSum = 0;
 		for(int i = 0; i < count; i++) {
@@ -145,7 +147,7 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 		System.out.println("수학평균 : " + matSum/(double)count);
 		System.out.println("총점 평균 : " + avgSum);
 	}
-	public void rank() {
+	 void rank() {
 		System.out.println("총점 석차 조회");
 		for(int i = 0; i < count - 1; i++) { 
 			int idx = i;
