@@ -26,10 +26,10 @@ public class StudentMain {
 				service.remove();
 				break;
 			case 5:
-				service.subavg();
+				service.allAvg();
 				break;
 			case 6:
-				service.rank();
+				service.readOrder();
 				break;
 			case 7:
 				System.out.println("bye~!");

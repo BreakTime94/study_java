@@ -15,30 +15,30 @@ public class Student { //수욱제에에
 	int eng;
 	int mat;
 	//int total = (kor + eng + mat) / 3; 도 방법이지만 좋지 않다.
-	Student(){
+	public Student(){
 		
 	}
-	Student(int no, String name){
+	public Student(int no, String name){
 		this.no = no;
 		this.name = name;
 	}
-	Student(int no, String name, int kor, int eng, int mat){
+	public Student(int no, String name, int kor, int eng, int mat){
 		this(no, name);
 		this.kor = kor;
 		this.eng = eng;
 		this.mat = mat;
 	}
-	int total() {
+	public int total() {
 		
 		return kor+eng+mat;
 	}
-	double avg() {
+	public double avg() {
 		
 		return total()/ 3d ;
 	}
 	
 	public String toString() {
-		return "학번 : " + no + " /이름 : " + name + " /국어 : " + kor + " /영어 : " + eng  + " /수학 : " + mat + " /평균 : " + avg() + " /총점 : " + total();  
+		return String.format("%5d %5s %5d %5d %5.2f %5d", no, name, kor, eng, mat, avg(), total());  
 	}
 		
 	
