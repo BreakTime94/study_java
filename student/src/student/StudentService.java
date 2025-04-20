@@ -1,4 +1,4 @@
-package student;
+ package student;
 
 import java.util.Arrays;
 
@@ -16,16 +16,24 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 	
 	Student[] students = new Student[4];
 	Student[] sortedStudents = new Student[students.length];
-	int count = 0;
+	int count ;
 	
+	//아래 인스턴스 블럭 실행 시점이 헷갈린다...
 	{
-		students[count++] = new Student (1, "개똥이", 90, 80, 90);
-		students[count++] = new Student (2, "말똥이", 80, 60, 50);
-		students[count++] = new Student (3, "소똥이", 40, 90, 70);
-		students[count++] = new Student (4, "돼지똥이", 100, 70, 80);
+		students[count++] = new Student (1, "개똥이");
+		students[count++] = new Student (2, "말똥이");
+		students[count++] = new Student (3, "소똥이");
+		students[count++] = new Student (4, "돼지똥이");
+		
+		for(int i = 0; i < 4; i++) {
+			students[i].kor = (int)(Math.random() * 41 + 60) ;
+			students[i].eng = (int)(Math.random() * 41 + 60) ;
+			students[i].mat = (int)(Math.random() * 41 + 60) ;
+		}
 		
 		sortedStudents = students.clone();
         rank();
+
 	}
 	//Student는 타입이 참조자료형이기 때문에 일단 null 이다. type은 student type 이고, 이는 student class에서 만든 필드를 요소로 구성한다?
 	
@@ -38,10 +46,11 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 	//입력: 학번으로
 	//출력: 학생 타입(이름, 점수 등등)
 	
-	Student findBy(int no) {
+	Student findBy(int no) {		
 		Student student = null;
 		for (int i = 0; i < count; i++) {
 			if(students[i].no == no) {
+				student = students[i];
 				break;
 			}
 		}
@@ -51,12 +60,16 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 	 void register() {
 		System.out.println("등록 기능");
 		int no = StudentUtils.nextInt("학번(1부터 자연수로) > ");
-		
+	
 		Student s = findBy(no);
 		
 		if(s != null) {
 			System.out.println("중복된 학번이 존재합니다.");
 			return;
+		}
+		
+		if(count == students.length) {
+			students = Arrays.copyOf(students, students.length * 2);
 		}
 		
 //		for (int i = 0; i < count; i++) {
@@ -67,25 +80,62 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 //			}
 //		}	
 		String name  = StudentUtils.nextLine("이름 > ");
+		try {
+			if(name.length() > 4 || name.length() < 2) {
+				throw new Exception ("이름을 2글자 ~ 4글자로 입력하세요."); 
+			} 
+//			else if( ) {
+//				throw new Exception ("한글만 입력하세요.");
+//			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return;
+		  }
 		int kor = StudentUtils.nextInt("국어점수 > ");
-		int mat = StudentUtils.nextInt("영어점수 > ");
-		int eng = StudentUtils.nextInt("수학점수 > ");
-		if(count == students.length) {
-			students = Arrays.copyOf(students, students.length * 2);
-			System.out.println(Arrays.toString(students));
-		}
+		try {
+			if(kor < 0 || kor > 100) {
+				throw new Exception("국어점수 범위가 잘못되었습니다.");
+			} 
+		} catch (Exception e1) {
+			System.out.println(e1.getMessage());
+			return;
+		  }
+		int eng = StudentUtils.nextInt("영어점수 > ");
+		try {
+			if(eng < 0 || eng > 100) {
+				throw new Exception("영어점수 범위가 잘못되었습니다.");
+			} 
+		} catch (Exception e2) {
+			System.out.println(e2.getMessage());
+			return;
+		  }
+		int mat = StudentUtils.nextInt("수학점수 > ");
+		try {
+			if(mat < 0 || mat > 100) {
+				throw new Exception("수학점수 범위가 잘못되었습니다.");
+			} 
+		} catch (Exception e3) {
+			System.out.println(e3.getMessage());
+			return;
+		  }
+		
+	
+		System.out.println("정보 입력 완료");
+	
+									
 		students[count++] = new Student(no, name, kor, eng, mat);
 		
 		sortedStudents = Arrays.copyOf(students,students.length);
-		rank();
-	}
+		rank();			
+	} 
+		
+	 //메서드의 객체 생성 가능?
+	 
+	 
 	//조회
 	 void read() {
 		System.out.println("조회 기능"); // 등록 학생 전체 조회
-		for(int i = 0; i < count; i++) {
-//			System.out.println(students[i].no + ", " + students[i].name + ", " + students[i].total() + ", " + students[i].avg());
 			print(students);
-		}
 	}
 	 void readOrder() {
 		System.out.println("석차순 조회 기능");
@@ -134,43 +184,44 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 	}
 	 void allAvg() {
 		System.out.println("과목별 평균조회");
-		double korSum = 0, engSum = 0, matSum = 0, avgSum = 0;
+		double avgKor = 0, avgEng = 0, avgMat = 0, avgAll = 0;
 		for(int i = 0; i < count; i++) {
-			korSum += students[i].kor;
-			engSum += students[i].eng;
-			matSum += students[i].mat; 	
+			avgKor += students[i].kor;
+			avgEng += students[i].eng;
+			avgMat += students[i].mat; 	
 		}
-		avgSum = (korSum + engSum + matSum) / (double) count;
+		avgKor /=(double)count;
+		avgEng /=(double)count;
+		avgMat /=(double)count;
+		
+		avgAll = (avgKor + avgEng + avgMat) / (double) 3;
 		System.out.println("총 인원 : " + count);
-		System.out.println("국어평균 : " + korSum/(double)count);
-		System.out.println("영어평균 : " + engSum/(double)count);
-		System.out.println("수학평균 : " + matSum/(double)count);
-		System.out.println("총점 평균 : " + avgSum);
+		System.out.println("국어평균 : " + avgKor);
+		System.out.println("영어평균 : " + avgEng);
+		System.out.println("수학평균 : " + avgMat);
+		System.out.println("총점 평균 : " + avgAll);
 	}
 	 void rank() {
 		System.out.println("총점 석차 조회");
 		for(int i = 0; i < count - 1; i++) { 
 			int idx = i;
 			for(int j = i + 1; j < count; j++) {
-				if(sortedStudents[idx].total() < sortedStudents[idx].total()) {
+				if(sortedStudents[idx].total() < sortedStudents[j].total()) {
 					idx = j;
 				}
 			}
-			Student tmp = sortedStudents[idx];
+			Student tmp = sortedStudents[i];
 			sortedStudents[i] = sortedStudents[idx];
 			sortedStudents[idx] = tmp;
-			System.out.println(Arrays.toString(students));
 		}	
-		sortedStudents = Arrays.copyOf(students,students.length);
-		rank();
 		
 	}
 //	250417 과제 1. 중복학번 학생 등록 방지
 	// 2. 점수당 평균값 출력 ex) 국어점수 평균, 수학점수 평균 + 총평균 (신규 메뉴)
 	// 3. 석차순 정렬(신규 메뉴) ex) 총점 기준 고득점자 순으로
 	// 4. Student 클래스의 toString 재정의 (마트 예제) 기존에 toString은 주소가 나온다. 
-	public static void main(String[] args) {
-		int[] arr = {5, 3, 2, 1, 4};
+//	public static void main(String[] args) {
+//		int[] arr = {5, 3, 2, 1, 4};
 		
 		// 탐색 n 번 -> 최솟값을 찾는다. 
 		// 1, 3, 2, 5, 4 1회차 후 0번 인덱스 고정
@@ -180,5 +231,5 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 		
 		
 		
-	}
+//	}
 }

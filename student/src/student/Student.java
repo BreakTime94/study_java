@@ -34,11 +34,11 @@ public class Student { //수욱제에에
 	}
 	 double avg() {
 		
-		return total()/ 3d ;
+		return total()/ 3d;
 	}
 	
 	public String toString() {
-		return String.format("%5d %5s %5d %5d %5.2f %5d", no, name, kor, eng, mat, avg(), total());  
+		return String.format("%5d %5s %5d %5d %5d %6.2f %5d", no, name, kor, eng, mat, avg(), total());  
 	}
 		
 	
