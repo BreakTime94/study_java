@@ -24,7 +24,7 @@ public class Hexa extends Shape {
 		return 2 * (x * y+ y * z + z * x);
 	}
 	
-	public double Volume () {
+	public double volume () {
 		return x * y * z;
 	}
 	

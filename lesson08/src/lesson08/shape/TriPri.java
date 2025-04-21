@@ -27,7 +27,7 @@ public class TriPri {
 		return h * (2 * s) + Math.sqrt(s * (s - x) * (s - y) * (s - z));
 	}
 	
-	public double Volume () {
+	public double volume () {
 		return Math.sqrt(s * (s - x) * (s - y) * (s - z)) * h ;
 	}
 }
