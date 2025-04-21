@@ -37,29 +37,13 @@ public class Ex250421 {
 				System.out.println(s);
 			}
 		}
-				
 		String[] qu = que.split("&");
 		
 //		System.out.println(Arrays.toString(qu));
 		
 		for(int i = 0; i < qu.length; i++) {
-			System.out.println("키 : " + qu[i].split("=")[0] + ", 값 : " + qu[i].split("=")[1]);
-		}
-		
-//		for(int i = 0; i < tmp.length; i++) {
-//			if (tmp[i].equals("?")) {//참조형은 .equals로
-//				idx = i;
-//				System.out.println(idx);
-//				count ++;
-				// 그리고 그 값을 새로운 배열에 출력
-//				System.out.println(Arrays.toString(arr));
-//			}
-//		}
-
-		
-		
+			System.out.println((i + 1) + "번째 키 : " + qu[i].split("=")[0] + ", " + (i + 1) + "번째 값 : " + qu[i].split("=")[1]);
+		}	
 	}
-	
-
 }
 
