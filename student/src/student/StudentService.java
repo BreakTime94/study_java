@@ -1,37 +1,44 @@
  package student;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StudentService {// 핵심 로직 클래스 CRUD(create read update delete)
 	// student 프로그램 과제
-	//1. 모든 필드, 메서드, 생성자 > 접근제한자 
-	// 1-1. 필드 private, 메서드 public, 생성자 public 
-	// 1-2. getter, setter
-	//2. 어떤 값을 입력하더라도 예외 처리 (프로그램 종료는 정상종료)
-	//3. 점수값 입력의 범위 0 ~ 100사이만 인정 예외로도 가능!
-	//4. 이름 입력은 한글만 인정, 2글자 ~ 4글자 예외로도 가능!
-	//5. 임시데이터의 점수값을 랜덤으로 배정 (60 ~ 100)
-	// lesson 8.shape 과제
-	// 2차원 도형 직각삼각형 추가(길이, 넓이 그대로), 3차원은 원기둥, 육면체, 삼각기둥 추가하면서, (겉넓이 부피도 추가) 깃허브 업로드 했는데 이상하구만
+	// 1. 학생예제의 배열 > 리스트로 교체 (arraylist)
+	// 2. 이름 유효성을 정규표현식으로 교체
 	
-	private Student[] students = new Student[4];
-	private Student[] sortedStudents = new Student[students.length];
+	private List<Student> students = new ArrayList<Student>();
+	private List<Student> sortedStudents = new ArrayList<Student>();
+//	private Student[] students = new Student[4];
+//	private Student[] sortedStudents = new Student[students.length];
 	private int count ;
 	
-	//아래 인스턴스 블럭 실행 시점이 헷갈린다...
+	
 	{
-		students[count++] = new Student (1, "개똥이", randomScore(), randomScore(), randomScore());
-		students[count++] = new Student (2, "말똥이", randomScore(), randomScore(), randomScore());
-		students[count++] = new Student (3, "소똥이", randomScore(), randomScore(), randomScore());
-		students[count++] = new Student (4, "돼지똥이", randomScore(), randomScore(), randomScore());
+		students.add(new Student (1, "개똥이", randomScore(), randomScore(), randomScore()));
+		students.add(new Student (2, "말똥이", randomScore(), randomScore(), randomScore()));
+		students.add(new Student (3, "소똥이", randomScore(), randomScore(), randomScore()));
+		students.add(new Student (4, "돼지똥이", randomScore(), randomScore(), randomScore()));
+//		students[count++] = new Student (1, "개똥이", randomScore(), randomScore(), randomScore());
+//		students[count++] = new Student (2, "말똥이", randomScore(), randomScore(), randomScore());
+//		students[count++] = new Student (3, "소똥이", randomScore(), randomScore(), randomScore());
+//		students[count++] = new Student (4, "돼지똥이", randomScore(), randomScore(), randomScore());
 		
 //		for(int i = 0; i < count; i++) {
 //			students[i].setKor((int)(Math.random() * 41 + 60));
 //			students[i].setEng((int)(Math.random() * 41 + 60));
 //			students[i].setMat((int)(Math.random() * 41 + 60));
 //		}
-		
-		sortedStudents = students.clone();
+		for(Student s : students) {
+			sortedStudents.add(s);
+			count++;
+		}
+//		System.out.println(sortedStudents);
+//		sortedStudents = students.clone();
         rank();
 
 	}
@@ -50,10 +57,12 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 	//출력: 학생 타입(이름, 점수 등등)
 	
 	public Student findBy(int no) {		
-		Student student = null;
+		//findBy는 배열이든, 리스트든 그 객체의 주소 값을 가져와서 입히는 것.
+		//그렇기에, findBy를 통해 student 의 객체 값(주소값)을 가져와서 findBy를 호출한 메서드나 필드로 이동.
+		 Student student = null;
 		for (int i = 0; i < count; i++) {
-			if(students[i].getNo() == no) {
-				student = students[i];
+			if(students.get(i).getNo() == no) {
+				student = students.get(i); 
 				break;
 			}
 		}
@@ -81,14 +90,17 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 	
 	public String inputName() {
 		String name = StudentUtils.nextLine("이름을 입력하세요 >");
-		if(name.length() < 2 || name.length() > 4) {
-			throw new IllegalArgumentException("이름은 2 ~ 4글자로 입력하세요");
-		}
-		for (int i = 0; i < name.length(); i++) {
-			if(name.charAt(i) < '가' || name.charAt(i) > '힣') {
+//		if(name.length() < 2 || name.length() > 4) {
+		Pattern p = Pattern.compile("[A-Za-z]+|[가-힣]{2,4}");//조건문을 2개 만들 필요가 없다.
+		Matcher m = p.matcher(name);
+			if(!(m.matches())) {
 				throw new IllegalArgumentException("이름은 한글로 구성되어야합니다.");
+			}	
+//		Pattern p1 = Pattern.compile("[가-힣]{2,4}"); // 범위만 나타나는 것이 아니라, 저 앞에 무엇이 2, 4 인지를 알아야 함.
+			if(!(m.matches())) {
+			throw new IllegalArgumentException("이름은 2 ~ 4글자로 입력하세요");
 			}
-		}
+		
 		return name;
 	}
 	
@@ -104,9 +116,10 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 			return;
 		}
 		
-		if(count == students.length) {
-			students = Arrays.copyOf(students, students.length * 2);
-		}
+//		if(count == students.size()) { //배열 늘리는 코드 테스트해보고 이상하면 수정해야함.
+//			
+//			students = Arrays.copyOf(students, students.size() * 2);
+//		}
 		
 //		for (int i = 0; i < count; i++) {
 //			if(students[i].no == no) {
@@ -129,9 +142,13 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 		System.out.println("정보 입력 완료");
 	
 									
-		students[count++] = new Student(no, name, kor, eng, mat);
+		students.add(new Student(no, name, kor, eng, mat));
 		
-		sortedStudents = Arrays.copyOf(students,students.length);
+
+		sortedStudents.add(count, students.get(count)); 
+		count++;
+		
+		
 		rank();			
 	}
 
@@ -149,10 +166,10 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 		print(sortedStudents);
 	}
 	
-	public void print(Student[] stu) {
-		for (int i = 0; i < count; i++) {
-			System.out.println(stu[i]);
-		}
+	public void print(List<Student> list) {
+//		for (int i = 0; i < count; i++) {
+			System.out.println(list);
+//		}
 	}
 	//수정
 	public void modify() {
@@ -160,7 +177,8 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 		//학생들 배열에서 입력받은 학번과 일치하는 학생 
 		int no = StudentUtils.nextInt("학번 > ");
 		Student s = findBy(no);
-		
+		//findBy를 통해 온 student는 인스턴스의 주소값이 담겨져 있다. 그렇기에 직접 
+		//접근하여서 대입을 하여도 주소 값 내의 인스턴스 값이 직접 수정이 된다.
 		if(s == null) {
 			System.out.println("입력된 학번이 존재하지 않습니다.");
 			return;
@@ -171,7 +189,11 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 			s.setEng(StudentUtils.nextInt("영어점수 > ")); 
 			s.setMat( StudentUtils.nextInt("수학점수 > "));
 			
-			sortedStudents = Arrays.copyOf(students,students.length);
+//			sortedStudents = students;
+//			students.get(0).getNo() == no;
+//			students.set(, s)
+//			students.set(students.get(no), s);
+//			sortedStudents.set(count, s);
 			rank();
 			
 		
@@ -181,22 +203,25 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 		System.out.println("삭제 기능");
 		int no = StudentUtils.nextInt("학번 > ");
 		for (int i = 0; i < count; i++) {
-			if(students[i].getNo() == no) {
-				System.arraycopy(students, i + 1, students, i, count - 1 - i); // 여기 행에 count--를 넣어도 됨
+				if(students.get(i).getNo() == no) {
+					students.remove(i);
+					sortedStudents.clear(); 
+					sortedStudents.addAll(students);
+//				System.arraycopy(students, i + 1, students, i, count - 1 - i); // 여기 행에 count--를 넣어도 됨
 				count--;
 				break;
 			}
 		}
-		sortedStudents = Arrays.copyOf(students,students.length);
+		
 		rank();
 	}
 	public void allAvg() {
 		System.out.println("과목별 평균조회");
 		double avgKor = 0, avgEng = 0, avgMat = 0, avgAll = 0;
 		for(int i = 0; i < count; i++) {
-			avgKor += students[i].getKor();
-			avgEng += students[i].getEng();
-			avgMat += students[i].getMat(); 	
+			avgKor += students.get(i).getKor();
+			avgEng += students.get(i).getEng();
+			avgMat += students.get(i).getMat(); 	
 		}
 		avgKor /=(double)count;
 		avgEng /=(double)count;
@@ -210,17 +235,16 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 		System.out.println("총점 평균 : " + avgAll);
 	}
 	public void rank() {
-		System.out.println("총점 석차 조회");
 		for(int i = 0; i < count - 1; i++) { 
 			int idx = i;
 			for(int j = i + 1; j < count; j++) {
-				if(sortedStudents[idx].total() < sortedStudents[j].total()) {
+				if(sortedStudents.get(idx).total() < sortedStudents.get(j).total()) {
 					idx = j;
 				}
 			}
-			Student tmp = sortedStudents[i];
-			sortedStudents[i] = sortedStudents[idx];
-			sortedStudents[idx] = tmp;
+			Student tmp = sortedStudents.get(i);
+			sortedStudents.set(i, sortedStudents.get(idx)); 
+			sortedStudents.set(idx, tmp);
 		}	
 		
 	}

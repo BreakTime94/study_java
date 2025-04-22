@@ -13,7 +13,6 @@ public class Student { //수욱제에에
 	// 2. 생성자
 	// 3. getter/setter 순서는 상관없으나, 일반적으로 이런 순서대로 작성을 한다. 
 	// 4. 추가적인 메서드
-	
 	private int no;
 	private String name;
 	private int kor;
