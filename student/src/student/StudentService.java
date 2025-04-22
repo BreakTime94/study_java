@@ -91,16 +91,18 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 	public String inputName() {
 		String name = StudentUtils.nextLine("이름을 입력하세요 >");
 //		if(name.length() < 2 || name.length() > 4) {
-		Pattern p = Pattern.compile("[A-Za-z]+|[가-힣]{2,4}");//조건문을 2개 만들 필요가 없다.
+//		Pattern p = Pattern.compile("[^A-Za-z]{2,4}");//조건문을 2개 만들 필요가 없다
+
+		Pattern p = Pattern.compile("[A-Za-z]+");
 		Matcher m = p.matcher(name);
-			if(!(m.matches())) {
+			if(m.matches()) {
 				throw new IllegalArgumentException("이름은 한글로 구성되어야합니다.");
-			}	
-//		Pattern p1 = Pattern.compile("[가-힣]{2,4}"); // 범위만 나타나는 것이 아니라, 저 앞에 무엇이 2, 4 인지를 알아야 함.
-			if(!(m.matches())) {
-			throw new IllegalArgumentException("이름은 2 ~ 4글자로 입력하세요");
 			}
-		
+		Pattern p1 = Pattern.compile("[가-힣]{2,4}"); // 범위만 나타나는 것이 아니라, 저 앞에 무엇이 2, 4 인지를 알아야 함.
+		m = p1.matcher(name);
+			if(!(m.matches())) {
+				throw new IllegalArgumentException("이름은 2 ~ 4글자로 입력하세요");
+			}
 		return name;
 	}
 	
@@ -178,7 +180,7 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 		int no = StudentUtils.nextInt("학번 > ");
 		Student s = findBy(no);
 		//findBy를 통해 온 student는 인스턴스의 주소값이 담겨져 있다. 그렇기에 직접 
-		//접근하여서 대입을 하여도 주소 값 내의 인스턴스 값이 직접 수정이 된다.
+		//접근하여서 대입을 하면 주소 값 내의 인스턴스 값이 직접 수정이 된다.
 		if(s == null) {
 			System.out.println("입력된 학번이 존재하지 않습니다.");
 			return;
