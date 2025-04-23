@@ -1,7 +1,7 @@
 package student;
 
 //Data class 학생들의 개별정보 입력 (대부분 인스턴스 변수) 학번의 목적 = 구별
-public class Student { //수욱제에에
+public class Student  { //수욱제에에
 	// 1. StudentMain의 나머지 기능 구현(메시지 출력)
 	// 2. Student의 생성자 구현
 	// 기본생성자 + (학번, 이름), (다섯개의 필드를 다 사용)
@@ -83,6 +83,7 @@ public class Student { //수욱제에에
 	public String toString() {
 		return String.format("%5d %5s %5d %5d %5d %6.2f %5d", no, name, kor, eng, mat, avg(), total());  
 	}
-		
+	
+	
 	
 }

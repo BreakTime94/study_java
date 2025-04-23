@@ -1,46 +1,43 @@
  package student;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class StudentService {// 핵심 로직 클래스 CRUD(create read update delete)
+public class StudentService  implements Comparator<Student>  {// 핵심 로직 클래스 CRUD(create read update delete)
 	// student 프로그램 과제
-	// 1. 학생예제의 배열 > 리스트로 교체 (arraylist)
-	// 2. 이름 유효성을 정규표현식으로 교체
+	// 1. 학생정렬 list 활용(comparator 정의) 오버라이딩
+	// 별개 과제 
+//	 Map을 활용한 문자열 빈도수 체크 Ex250423
 	
 	private List<Student> students = new ArrayList<Student>();
-	private List<Student> sortedStudents = new ArrayList<Student>();
+	private List<Student> sortedStudents;
 //	private Student[] students = new Student[4];
 //	private Student[] sortedStudents = new Student[students.length];
-	private int count ;
-	
 	
 	{
 		students.add(new Student (1, "개똥이", randomScore(), randomScore(), randomScore()));
 		students.add(new Student (2, "말똥이", randomScore(), randomScore(), randomScore()));
 		students.add(new Student (3, "소똥이", randomScore(), randomScore(), randomScore()));
 		students.add(new Student (4, "돼지똥이", randomScore(), randomScore(), randomScore()));
-//		students[count++] = new Student (1, "개똥이", randomScore(), randomScore(), randomScore());
-//		students[count++] = new Student (2, "말똥이", randomScore(), randomScore(), randomScore());
-//		students[count++] = new Student (3, "소똥이", randomScore(), randomScore(), randomScore());
-//		students[count++] = new Student (4, "돼지똥이", randomScore(), randomScore(), randomScore());
 		
 //		for(int i = 0; i < count; i++) {
 //			students[i].setKor((int)(Math.random() * 41 + 60));
 //			students[i].setEng((int)(Math.random() * 41 + 60));
 //			students[i].setMat((int)(Math.random() * 41 + 60));
-//		}
-		for(Student s : students) {
-			sortedStudents.add(s);
-			count++;
-		}
-//		System.out.println(sortedStudents);
-//		sortedStudents = students.clone();
+//		} // clone은 기본적으로 protected이기 때문에 override 해서 써야한다. 
+		// 리스트는 인터페이스이기 때문에 clone을 하지 못한다. 
+//		1. sortedStudents.addAll(students); 방법 0개 짜리 리스트에 4개짜리 리스트를 추가하는 방식
+			
+		sortedStudents = new ArrayList<Student>(students); // 2번 방법. 생성자를 이용하여 호출을 한다. 
         rank();
-
 	}
 	public int randomScore() {
 		return (int)(Math.random() * 41 + 60);
@@ -60,7 +57,7 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 		//findBy는 배열이든, 리스트든 그 객체의 주소 값을 가져와서 입히는 것.
 		//그렇기에, findBy를 통해 student 의 객체 값(주소값)을 가져와서 findBy를 호출한 메서드나 필드로 이동.
 		 Student student = null;
-		for (int i = 0; i < count; i++) {
+		for (int i = 0; i < students.size(); i++) {
 			if(students.get(i).getNo() == no) {
 				student = students.get(i); 
 				break;
@@ -90,19 +87,10 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 	
 	public String inputName() {
 		String name = StudentUtils.nextLine("이름을 입력하세요 >");
-//		if(name.length() < 2 || name.length() > 4) {
-//		Pattern p = Pattern.compile("[^A-Za-z]{2,4}");//조건문을 2개 만들 필요가 없다
-
-		Pattern p = Pattern.compile("[A-Za-z]+");
-		Matcher m = p.matcher(name);
-			if(m.matches()) {
-				throw new IllegalArgumentException("이름은 한글로 구성되어야합니다.");
-			}
-		Pattern p1 = Pattern.compile("[가-힣]{2,4}"); // 범위만 나타나는 것이 아니라, 저 앞에 무엇이 2, 4 인지를 알아야 함.
-		m = p1.matcher(name);
-			if(!(m.matches())) {
-				throw new IllegalArgumentException("이름은 2 ~ 4글자로 입력하세요");
-			}
+//		
+		if(!name.matches("[가-힣]{2,4}")) {
+			throw new IllegalArgumentException("이름은 2 ~ 4개의 한글로 입력하세요");
+		}
 		return name;
 	}
 	
@@ -143,13 +131,11 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 		
 		System.out.println("정보 입력 완료");
 	
-									
-		students.add(new Student(no, name, kor, eng, mat));
+		Student s2 = new Student(no, name, kor, eng, mat); // 각 리스트에서 포함된 객체 값의 주소를 통일하기 위해 임시 변수 생성 및 보관
 		
-
-		sortedStudents.add(count, students.get(count)); 
-		count++;
-		
+		students.add(s2);
+	
+		sortedStudents.add(s2);
 		
 		rank();			
 	}
@@ -169,8 +155,9 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 	}
 	
 	public void print(List<Student> list) {
-//		for (int i = 0; i < count; i++) {
-			System.out.println(list);
+		list.forEach(s -> System.out.println(s)); 
+//		for (int i = 0; i < list.size(); i++) {
+//			System.out.println(list.get(i));
 //		}
 	}
 	//수정
@@ -191,65 +178,73 @@ public class StudentService {// 핵심 로직 클래스 CRUD(create read update 
 			s.setEng(StudentUtils.nextInt("영어점수 > ")); 
 			s.setMat( StudentUtils.nextInt("수학점수 > "));
 			
-//			sortedStudents = students;
-//			students.get(0).getNo() == no;
-//			students.set(, s)
-//			students.set(students.get(no), s);
-//			sortedStudents.set(count, s);
+
 			rank();
-			
-		
 	}
 	//삭제
 	public void remove() {// 필드(인스턴스 변수 내 저장된 값을 주소값을 지우는 방법을 모색해보자 by 상현
 		System.out.println("삭제 기능");
 		int no = StudentUtils.nextInt("학번 > ");
-		for (int i = 0; i < count; i++) {
-				if(students.get(i).getNo() == no) {
-					students.remove(i);
-					sortedStudents.clear(); 
-					sortedStudents.addAll(students);
-//				System.arraycopy(students, i + 1, students, i, count - 1 - i); // 여기 행에 count--를 넣어도 됨
-				count--;
-				break;
-			}
+		Student s = findBy(no);
+		if(s == null) {
+			System.out.println("입력된 학번이 존재하지 않습니다");
+			return;
 		}
+		students.remove(s); // s(student 타입의 객체) 자체를 지워버린다.
+		sortedStudents.remove(s);
 		
-		rank();
+//		rank(); 어차피 사라져도 순위는 그대로 유지가 된다.
 	}
 	public void allAvg() {
 		System.out.println("과목별 평균조회");
+//		students.stream().map(s -> s.getKor()); 인티저스트림, 국어 점수만 나열되어 있음. 계속 차원을 줄여서 인티저 단항으로 만드는 것이 목표.
 		double avgKor = 0, avgEng = 0, avgMat = 0, avgAll = 0;
-		for(int i = 0; i < count; i++) {
+		int size = students.size();
+		for(int i = 0; i < size; i++) {
 			avgKor += students.get(i).getKor();
 			avgEng += students.get(i).getEng();
 			avgMat += students.get(i).getMat(); 	
 		}
-		avgKor /=(double)count;
-		avgEng /=(double)count;
-		avgMat /=(double)count;
+		avgKor /=(double)size;
+		avgEng /=(double)size;
+		avgMat /=(double)size;
 		
 		avgAll = (avgKor + avgEng + avgMat) / (double) 3;
-		System.out.println("총 인원 : " + count);
+		System.out.println("총 인원 : " + size);
 		System.out.println("국어평균 : " + avgKor);
 		System.out.println("영어평균 : " + avgEng);
 		System.out.println("수학평균 : " + avgMat);
 		System.out.println("총점 평균 : " + avgAll);
 	}
 	public void rank() {
-		for(int i = 0; i < count - 1; i++) { 
-			int idx = i;
-			for(int j = i + 1; j < count; j++) {
-				if(sortedStudents.get(idx).total() < sortedStudents.get(j).total()) {
-					idx = j;
-				}
-			}
-			Student tmp = sortedStudents.get(i);
-			sortedStudents.set(i, sortedStudents.get(idx)); 
-			sortedStudents.set(idx, tmp);
-		}	
 		
+		Set<Student> set = new TreeSet<>(sortedStudents);
+		////		for(int i = 0; i < sortedStudents.size() - 1; i++) { 
+		////			int idx = i;
+		////			for(int j = i + 1; j < sortedStudents.size(); j++) {
+		////				if(sortedStudents.get(idx).total() < sortedStudents.get(j).total()) {
+		////					idx = j;
+		////				}
+		////			}
+		////			Student tmp = sortedStudents.get(i);
+		////			sortedStudents.set(i, sortedStudents.get(idx)); 
+		////			sortedStudents.set(idx, tmp);
+		////		}	
+	
+		}
+
+	@Override
+	public int compare(Student o1, Student o2) {
+		// TODO Auto-generated method stub
+		return -(o1.total() - o2.total());
 	}
+		
+		
+	
+
+
+	
+	
 //	250417 과제 1. 중복학번 학생 등록 방지
 	// 2. 점수당 평균값 출력 ex) 국어점수 평균, 수학점수 평균 + 총평균 (신규 메뉴)
 	// 3. 석차순 정렬(신규 메뉴) ex) 총점 기준 고득점자 순으로
