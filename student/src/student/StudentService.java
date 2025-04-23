@@ -11,7 +11,7 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class StudentService  implements Comparator<Student>  {// 핵심 로직 클래스 CRUD(create read update delete)
+public class StudentService    {// 핵심 로직 클래스 CRUD(create read update delete)
 	// student 프로그램 과제
 	// 1. 학생정렬 list 활용(comparator 정의) 오버라이딩
 	// 별개 과제 
@@ -217,8 +217,21 @@ public class StudentService  implements Comparator<Student>  {// 핵심 로직 �
 		System.out.println("총점 평균 : " + avgAll);
 	}
 	public void rank() {
-		
 		Set<Student> set = new TreeSet<>(sortedStudents);
+		sortedStudents.clear(); 
+		sortedStudents.addAll(set);
+//			Comparator<Student> comparator = new Comparator<Student>() {
+//				
+//				@Override
+//				public int compare(Student o1, Student o2) {
+//					// TODO Auto-generated method stub
+//					return -(o1.total() - o2.total());
+//				}
+//			};
+//			sortedStudents.sort(comparator);
+		}
+		
+		
 		////		for(int i = 0; i < sortedStudents.size() - 1; i++) { 
 		////			int idx = i;
 		////			for(int j = i + 1; j < sortedStudents.size(); j++) {
@@ -231,18 +244,6 @@ public class StudentService  implements Comparator<Student>  {// 핵심 로직 �
 		////			sortedStudents.set(idx, tmp);
 		////		}	
 	
-		}
-
-	@Override
-	public int compare(Student o1, Student o2) {
-		// TODO Auto-generated method stub
-		return -(o1.total() - o2.total());
-	}
-		
-		
-	
-
-
 	
 	
 //	250417 과제 1. 중복학번 학생 등록 방지

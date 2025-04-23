@@ -31,6 +31,9 @@ public class HashMapEx {
 		List<Integer> v1 = new ArrayList<Integer>(map.values());
 		Set<Integer> v2 = new HashSet<Integer>(map.values());
 		
+		System.out.println(v1);
+		System.out.println(v2);
+		
 		Set<Entry<String, Integer>> s = map.entrySet(); //Entry로 구성된 셋, Entry는 String과 Integer로 구성됨.
 		
 		for(Entry <String, Integer> e : s) { 
