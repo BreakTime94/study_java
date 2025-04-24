@@ -87,9 +87,58 @@ public class Student implements Comparable<Student> { //수욱제에에
 	@Override
 	public int compareTo(Student o) {
 		// TODO Auto-generated method stub
-		return -(this.total() - o.total());
+		return -(this.total() - o.total()); // name.compareTo(o.name);
 	}
-
 	
+	public static Builder builder(){
+		return new Builder() ;
+	}
+	static class Builder{
+		private int no;
+		private String name;
+		private int kor;
+		private int eng;
+		private int mat;
+		
+		public Builder no(int no) {
+			this.no = no;
+			return this;
+		}
+		public Builder name(String name) {
+			this.name = name;
+			return this;
+		}
+		public Builder kor(int kor) {
+			this.kor = kor;
+			return this;
+		}
+		public Builder eng(int eng) {
+			this.eng = eng;
+			return this;
+		}
+		public Builder mat(int mat) {
+			this.mat = mat;
+			return this;
+		}
+		
+		public Student build() {
+			return new Student(this);
+		}
+	}
+	
+	private Student(Builder builder) {
+		this.no = builder.no;
+		this.name = builder.name;
+		this.kor = builder.kor;
+		this.eng = builder.eng;
+		this.mat = builder.mat;
+	}
+	
+	public static void main(String[] args) { //빌더는 new 연산자 대신에 
+		Student student = Student.builder().no(1).name("새똥이").kor(90).build(); // 스태틱메서드로서의 builder가 필요하고 반환했을 때, 학생타입을 반환해야함.
+		student = Student.builder().no(3).name("염병이").eng(77).build();
+		System.out.println(student);
+	}
+	//메서드 체이닝이란 체인을 계속 진행하면서 자기 자신의 주소값(참조값)을 반환한다.
 	
 }

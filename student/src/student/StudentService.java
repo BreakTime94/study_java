@@ -3,6 +3,7 @@
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -23,10 +24,10 @@ public class StudentService    {// 핵심 로직 클래스 CRUD(create read upda
 //	private Student[] sortedStudents = new Student[students.length];
 	
 	{
-		students.add(new Student (1, "개똥이", randomScore(), randomScore(), randomScore()));
-		students.add(new Student (2, "말똥이", randomScore(), randomScore(), randomScore()));
-		students.add(new Student (3, "소똥이", randomScore(), randomScore(), randomScore()));
-		students.add(new Student (4, "돼지똥이", randomScore(), randomScore(), randomScore()));
+		students.add(Student.builder().no(1).name("개똥이").kor(randomScore()).eng(randomScore()).mat(randomScore()).build());
+		students.add(Student.builder().no(2).name("말똥이").kor(randomScore()).eng(randomScore()).mat(randomScore()).build());
+		students.add(Student.builder().no(3).name("소똥이").kor(randomScore()).eng(randomScore()).mat(randomScore()).build());
+		students.add(Student.builder().no(4).name("돼지똥이").kor(randomScore()).eng(randomScore()).mat(randomScore()).build());
 		
 //		for(int i = 0; i < count; i++) {
 //			students[i].setKor((int)(Math.random() * 41 + 60));
@@ -39,6 +40,18 @@ public class StudentService    {// 핵심 로직 클래스 CRUD(create read upda
 		sortedStudents = new ArrayList<Student>(students); // 2번 방법. 생성자를 이용하여 호출을 한다. 
         rank();
 	}
+	
+	private static StudentService studentService = new StudentService();
+	
+	private StudentService() {
+		
+	}
+	
+	public static StudentService getInstance() {
+		return studentService;
+	}
+	
+	
 	public int randomScore() {
 		return (int)(Math.random() * 41 + 60);
 	}
@@ -220,30 +233,24 @@ public class StudentService    {// 핵심 로직 클래스 CRUD(create read upda
 		Set<Student> set = new TreeSet<>(sortedStudents);
 		sortedStudents.clear(); 
 		sortedStudents.addAll(set);
-//			Comparator<Student> comparator = new Comparator<Student>() {
-//				
-//				@Override
-//				public int compare(Student o1, Student o2) {
-//					// TODO Auto-generated method stub
-//					return -(o1.total() - o2.total());
-//				}
-//			};
-//			sortedStudents.sort(comparator);
+		
+		// 1. List.sort() 
+//		sortedStudents.sort(new Comparator<Student>(){
+//			@Override
+//			public int compare(Student o1, Student o2) {
+//				// TODO Auto-generated method stub
+//				return -(o1.total() - o2.total()); // avg로 하면 더블타입이라서 Double.compare(o2.avg(), o1.avg());
+
+//		});
+		// 2. TreeSet() 
+//		sortedStudents = new ArrayList<>(new TreeSet<>(sortedStudents));
+		// 3. Collections (컬렉션을 대상으로 하는 유틸클래스)
+//			Collections.sort(sortedStudents, (o1, o2) -> o2,total() - o1.total() );
+		
+		
 		}
 		
 		
-		////		for(int i = 0; i < sortedStudents.size() - 1; i++) { 
-		////			int idx = i;
-		////			for(int j = i + 1; j < sortedStudents.size(); j++) {
-		////				if(sortedStudents.get(idx).total() < sortedStudents.get(j).total()) {
-		////					idx = j;
-		////				}
-		////			}
-		////			Student tmp = sortedStudents.get(i);
-		////			sortedStudents.set(i, sortedStudents.get(idx)); 
-		////			sortedStudents.set(idx, tmp);
-		////		}	
-	
 	
 	
 //	250417 과제 1. 중복학번 학생 등록 방지
@@ -258,8 +265,6 @@ public class StudentService    {// 핵심 로직 클래스 CRUD(create read upda
 		// 1, 2, 3, 5, 4 2회차 0번 1번 인덱스 고정
 		// 1, 2, 3, 5, 4 3회차 결과 동일, 0, 1, 2 인덱스 고정
 		// 1, 2, 3, 4, 5 4회차 결과 0, 1, 2, 3, 4 번 인덱스 자연스럽게 고정
-		
-		
 		
 //	}
 }

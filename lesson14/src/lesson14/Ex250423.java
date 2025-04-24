@@ -10,65 +10,31 @@ import java.util.Set;
 
 public class Ex250423 {
 	public static void main(String[] args) {
-		String str = "aaaaabbbbcccddddd";
-		
-//		String a = str.substring(0, str.indexOf("b"));
-//		
-//		System.out.println(a);
-//		str = str.substring(str.lastIndexOf("a") + 1 , str.length());
-//		System.out.println(str);
-//		String b = str.substring(0, str.lastIndexOf("b"));
-//		System.out.println(str);
-//		String c = str.substring(str.lastIndexOf("b") + 1, str.lastIndexOf("c"));
-//		String d = str.substring(0, str.lastIndexOf("d"));
-//		System.out.printf("%d %d %d %d", a, b, c, d);
-
-		Map<String, Integer> map = new HashMap<String, Integer>();
-		String[] arr = str.split("");
-		System.out.println(Arrays.toString(arr));
-		
-		List<String> list = new ArrayList<String>();
-		
-		for(int i = 0; i < arr.length; i++) {
-			list.add(arr[i]);
-		}
-		
-		Set<String> set = new HashSet<String>(list);
-		list.clear();
-		list.addAll(set);
-		System.out.println(list);
-		
-		int a = str.lastIndexOf("a");
-		int b = str.lastIndexOf("b");
-		int c= str.lastIndexOf("c");
-		int d = str.lastIndexOf("d");
-		int [] num = {a + 1, b - a, c - b, d - c} ;
-		
-		System.out.println(Arrays.toString(num));
-		for(int i = 0; i < num.length; i++) {
-			map.put(list.get(i), num[i]);
-		}
-		System.out.println(map.entrySet());
-//		for(int i = 0; i < num.length; i++) {
-//			for(int j = 0; j < arr.length - 1; j++) {
-//				if(arr[j].equals(arr[j+1])) {
-//					num[i]++;
-//					
-//				} else {
-//					if(i == 4) {
-//						break;
-//					}
-//					num[i]++;
-//					System.arraycopy(arr, j + 1, arr, 0, arr.length - j - 1);
-//					arr = Arrays.copyOf(arr, arr.length - j - 1);
-//					break;
-//				}
-//			}
-//		}
-		
-//		
-
+		String str = "aaaaabbbbcccddddd";		
 		// 출력값 {a:5, b:4, c:3, d:5} Map을 활용하여 진행하라
+		// 문자열, 문자배열, 문자열 배열
+		Map<String, Integer> map = new HashMap<>();
+		
+		String[] strs = str.split("");
+		
+		for(String s : strs) {
+			System.out.println(s);
+//			System.out.println(map.get(s)); // map.get(s)의 값은 Integer로 나옴 String은 key 이고, get을 통해 value를 추출하기에 Integer 타입이다.
+			Integer i = map.get(s); // a 문자에 대하여 key 값을 계속 올린다.
+			System.out.println("i : " + i); // b 문자에 대해서는 key 값이 없다.
+			if(i == null) {
+				map.put(s, 1);
+				System.out.println(map);
+			}
+			else {
+				map.put(s, i + 1);
+				System.out.println(map);
+			}
+//			map.put(s, i == null ? 1 : i + 1);
+		}
+		System.out.println(map);
+		
+		
 	}
 
 }

@@ -9,7 +9,7 @@ public class StudentMain {
 //		//사용자로부터 숫자 입력을 받고 싶음
 //		System.out.println(StudentUtils.nextInt("숫자 입력하세요 >")); 
 		
-		StudentService service = new StudentService();
+		StudentService service = StudentService.getInstance();
 		System.out.println("================학생 점수 관리 프로그램================");
 		
 			
