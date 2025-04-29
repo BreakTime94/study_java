@@ -2,7 +2,7 @@
 - 설치 프로그램 정리
     1. ChromeBrowser 설치
     2. 반디집 설치
-    3. D2coding Font 설치 
+    3. D2Coding Font 설치 
     > 파일 우클릭 모든 사용자용으로 설치
     4. JDK 21 설치
     5. 이클립스 설치
