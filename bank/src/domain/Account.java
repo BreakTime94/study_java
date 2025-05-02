@@ -11,20 +11,17 @@ public class Account {
 	private Customer customer;
 	// 계좌비밀번호
 	private String pw;
-	//출금한도액수
-	private long limit;
+	//1회 출금한도액수, 이체 가능 
+	private long limit = 1000000;
 	//개설일
-	private Date date;
+	private Date date = new Date();
 	
 	public Account() {}
 
-	public Account(int no, long amount, Customer customer, String pw, long limit, Date date) {
+	public Account(int no, Customer customer, String pw) {
 		this.no = no;
-		this.amount = amount;
 		this.customer = customer;
 		this.pw = pw;
-		this.limit = limit;
-		this.date = date;
 	}
 
 	public int getNo() {

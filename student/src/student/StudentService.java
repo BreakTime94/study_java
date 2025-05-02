@@ -1,5 +1,12 @@
  package student;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -11,11 +18,14 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("unchecked")
 public class StudentService    {// 핵심 로직 클래스 CRUD(create read update delete)
 	// student 프로그램 과제
 	// 1. 학생정렬 list 활용(comparator 정의) 오버라이딩
 	// 별개 과제 
 //	 Map을 활용한 문자열 빈도수 체크 Ex250423
+	// 저장시점 : 변동사항이 있을 때 , 불러오는 시점: 프로그램 시작할 때. 
+	// 처음 시작할 때는 파일 자체가 없으므로 더미 데이터를 파일로 불러오게 한다. 
 	
 	private List<Student> students = new ArrayList<Student>();
 	private List<Student> sortedStudents;
@@ -23,11 +33,22 @@ public class StudentService    {// 핵심 로직 클래스 CRUD(create read upda
 //	private Student[] sortedStudents = new Student[students.length];
 	
 	{
-		students.add(Student.builder().no(1).name("개똥이").kor(randomScore()).eng(randomScore()).mat(randomScore()).build());
-		students.add(Student.builder().no(2).name("말똥이").kor(randomScore()).eng(randomScore()).mat(randomScore()).build());
-		students.add(Student.builder().no(3).name("소똥이").kor(randomScore()).eng(randomScore()).mat(randomScore()).build());
-		students.add(Student.builder().no(4).name("돼지똥이").kor(randomScore()).eng(randomScore()).mat(randomScore()).build());
-		
+		ObjectInputStream ois = null;
+		try {
+			new ObjectInputStream(new FileInputStream("data/student.ser"));//확장자는 분류화를 위한 작업 /는 디렉토리
+			students = (List)ois.readObject();
+			ois.close();
+		}
+		catch(FileNotFoundException e) {
+			System.out.println("파일을 불러 올 수 없습니다. 임시 데이터셋으로 진행합니다.");
+			students.add(Student.builder().no(1).name("개똥이").kor(randomScore()).eng(randomScore()).mat(randomScore()).build());
+			students.add(Student.builder().no(2).name("말똥이").kor(randomScore()).eng(randomScore()).mat(randomScore()).build());
+			students.add(Student.builder().no(3).name("소똥이").kor(randomScore()).eng(randomScore()).mat(randomScore()).build());
+			students.add(Student.builder().no(4).name("돼지똥이").kor(randomScore()).eng(randomScore()).mat(randomScore()).build());
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 //		for(int i = 0; i < count; i++) {
 //			students[i].setKor((int)(Math.random() * 41 + 60));
 //			students[i].setEng((int)(Math.random() * 41 + 60));
@@ -108,7 +129,7 @@ public class StudentService    {// 핵심 로직 클래스 CRUD(create read upda
 	
 	//등록 setter가 필요 , 기존의 저장된 값을 가져오는 것은 getter
 	public void register() {
-		System.out.println("등록 기능");
+		System.out.println("회원가입");
 		int no = StudentUtils.nextInt("학번(1부터 자연수로) > ");
 	
 		Student s = findBy(no);
@@ -149,7 +170,8 @@ public class StudentService    {// 핵심 로직 클래스 CRUD(create read upda
 	
 		sortedStudents.add(s2);
 		
-		rank();			
+		rank();		
+		save();
 	}
 
 		
@@ -192,6 +214,7 @@ public class StudentService    {// 핵심 로직 클래스 CRUD(create read upda
 			
 
 			rank();
+			save();
 	}
 	//삭제
 	public void remove() {// 필드(인스턴스 변수 내 저장된 값을 주소값을 지우는 방법을 모색해보자 by 상현
@@ -204,7 +227,7 @@ public class StudentService    {// 핵심 로직 클래스 CRUD(create read upda
 		}
 		students.remove(s); // s(student 타입의 객체) 자체를 지워버린다.
 		sortedStudents.remove(s);
-		
+		save();
 //		rank(); 어차피 사라져도 순위는 그대로 유지가 된다.
 	}
 	public void allAvg() {
@@ -245,10 +268,21 @@ public class StudentService    {// 핵심 로직 클래스 CRUD(create read upda
 //		sortedStudents = new ArrayList<>(new TreeSet<>(sortedStudents));
 		// 3. Collections (컬렉션을 대상으로 하는 유틸클래스)
 //			Collections.sort(sortedStudents, (o1, o2) -> o2,total() - o1.total() );
-		
-		
 		}
-		
+	private void save() {//파일시스템의 맹점은 동시 쓰기가 안된다.
+		try {
+			File file = new File("data");
+			if(!file.exists()) {
+				file.mkdirs(); // 상대 경로 디렉토리 만들어라. mkdir은 절대경로
+			}
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(file, "student.ser"))); // file 디렉토리 밑에 파일명 저거
+			oos.writeObject(students);
+			oos.close();
+		} catch (IOException e) {
+			System.out.println("파일 접근 권한이 없습니다.");
+			e.printStackTrace();
+		}
+	}
 		
 	
 	

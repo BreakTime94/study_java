@@ -71,7 +71,7 @@ public class Customer {
 
 	@Override
 	public String toString() {
-		return String.format("Customer [회원번호=%s, 이름=%s, 연락처=%s, 이메일=%s, 아이디=%s, pw=%s]", no, name, tel, email, id, pw);
+		return String.format("[회원번호 = %s, 이름 = %s, 연락처 = %s, 이메일 = %s, 아이디 = %s, ", no, name, tel, email, id);
 	}
 	
 	

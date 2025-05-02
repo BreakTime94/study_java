@@ -10,15 +10,13 @@ public class DeckTest {
 	static void play() {
 		Deck d = new Deck();
 		d.shuffle();//카드 섞기
-		Player p1 = new Player();
-		Player p2 = new Player();
 		
-		Player[] player = {p1 ,p2};
-		p1.name =  "개똥이";
-		p2.name = "말똥이";
+		Player[] player = {new Player() ,new Player()};
+		player[0].name =  "개똥이";
+		player[1].name = "말똥이";
 		for(int i = 0; i < player.length ; i++) {
 			for(int j = 0; j < 5; j++) {
-				p1.card = d.pick(j);
+				player[i].card = d.pick(j);
 			}
 		}
 		System.out.println(Arrays.toString(player));

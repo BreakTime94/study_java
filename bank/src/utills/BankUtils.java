@@ -21,7 +21,7 @@ public class BankUtils {
 	 // 유틸은 클래스 객체, 클래스 매서드로 사용함.
 	 public static boolean nextConfirm(String msg) {
 		 
-		 String s = nextLine(msg);
+		 String s = nextLine(msg + "[y/n]");
 		 return s.equalsIgnoreCase("y") || s.equalsIgnoreCase("yes");
 	 }
 }
