@@ -9,10 +9,11 @@ public class Deck {// 학생 서비스 같은 역할
 	List<Card> cards = new ArrayList<Card>();
 	
 	{
-		int c = 0;
+//		int c = 0;
+		Kind[] kinds = Kind.values(); // .values는 순서대로 배열
 		for(int i = 0; i < 4; i++) {
 			for(int j = 0; j < 13; j++) {
-				cards.add(new Card(i, j)); // int c= 0; 을 정의하고 배열의 인덱스 값에 c++을 넣어도 된다.
+				cards.add(new Card(kinds[i], j)); // int c= 0; 을 정의하고 배열의 인덱스 값에 c++을 넣어도 된다.
 			}
 		}
 	}

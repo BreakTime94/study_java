@@ -1,10 +1,10 @@
 package card;
 
 public class Card { // 학생 역할
-	int kind; // 스페이드(칼) 다이아(돈) 하트(생명) 클로버(농민)의 높낮이를 표기하기 위해.
+	Kind kind; // 스페이드(칼) 다이아(돈) 하트(생명) 클로버(농민)의 높낮이를 표기하기 위해.
 	int number; // 2, 3, 4, 5, 6, ... J, Q, K, A
 	
-	Card(int kind, int number){
+	Card(Kind kind, int number){
 		this.kind = kind;
 		this.number = number;
 	}
@@ -13,6 +13,6 @@ public class Card { // 학생 역할
 		// 
 		String numbers = "23456789XJQKA";
 		String kinds = "♣♥◆♠";
-		return "[" + kinds.charAt(kind) + ", " + numbers.charAt(number) + "]";
+		return "[" + kind + ", " + numbers.charAt(number) + "]";
 	}
 }

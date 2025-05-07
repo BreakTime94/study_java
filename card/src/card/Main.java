@@ -4,10 +4,24 @@ import java.util.ArrayList;
 
 public class Main { // 무조건 복습
 	public static void main(String[] args) {
+//		Card card = new Card(Kind.CLOVER, 0);
+//		System.out.println(card);
+//		System.out.println(card.kind);
+//		card.kind = Kind.SPADE;
+//		System.out.println(card.kind);
+//		System.out.println(card);
+//		Kind kind = Kind.CLOVER;
+//		System.out.println(kind.score());
+//		System.out.println(kind.ordinal());
+//		Kind kind2 = Kind.DIAMOND;
+//		System.out.println(kind2.getName() + ": " + kind2.score());
+//		System.out.println(kind2.ordinal());
+//		System.out.println(kind == kind2); // 동치비교 가능
+		
 		play();
-		String s = String.valueOf(1);
-		String s2 = 1 + ""; //위와 아래가 동일
-		System.out.println("1234".contains("23"));
+//		String s = String.valueOf(1);
+//		String s2 = 1 + ""; //위와 아래가 동일
+//		System.out.println("1234".contains("23"));
 	}
 	
 	static void play() {
